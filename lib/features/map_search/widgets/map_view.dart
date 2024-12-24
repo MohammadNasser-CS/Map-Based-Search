@@ -1,8 +1,7 @@
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_cache/flutter_map_cache.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 class MapView extends StatelessWidget {
   final Future<String> cacheStr;
@@ -32,12 +31,11 @@ class MapView extends StatelessWidget {
           ),
           children: [
             TileLayer(
-              tileProvider: CachedTileProvider(
-                maxStale: const Duration(days: 30),
-                store: HiveCacheStore(snapshot.data,
-                    hiveBoxName: "HiveCacheStore"),
-              ),
-              urlTemplate: "http://127.0.0.1:7070/0/0/0.png",
+              tileProvider: FMTCStore('mapStore').getTileProvider(
+                  settings: FMTCTileProviderSettings(
+                      behavior: CacheBehavior.onlineFirst,
+                      maxStoreLength: 1000)),
+              urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
             ),
             if (markers.isNotEmpty) MarkerLayer(markers: markers),
           ],

@@ -28,6 +28,7 @@ class _MapSearchPageState extends State<MapSearchPage> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<MapCubit>(context);
@@ -80,7 +81,8 @@ class _MapSearchPageState extends State<MapSearchPage> {
               controller: _searchController,
               onSearch: () async =>
                   {await cubit.searchMarkersByCategory(_searchController.text)},
-              onSubmit: (value) async => {await cubit.searchMarkersByCategory(value)}),
+              onSubmit: (value) async =>
+                  {await cubit.searchMarkersByCategory(value)}),
           Positioned(
             bottom: 80,
             right: 20,
@@ -89,6 +91,7 @@ class _MapSearchPageState extends State<MapSearchPage> {
               child: const Icon(Icons.my_location),
             ),
           ),
+          
         ],
       ),
     );

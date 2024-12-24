@@ -22,7 +22,7 @@ List<PersistentTabConfig> buildScreens() {
     PersistentTabConfig(
       screen: BlocProvider(
         create: (context) {
-          final cubit=MapCubit();
+          final cubit = MapCubit();
           cubit.loadInitialLocation();
           return MapCubit();
         },
