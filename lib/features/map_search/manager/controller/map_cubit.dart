@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:map_based_search/features/map_search/models/marker_model.dart';
 import 'package:map_based_search/features/map_search/services/map_services_implementation.dart';
 import 'package:map_based_search/features/map_search/services/map_services_interface.dart';
-import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 part 'map_state.dart';
 
@@ -18,25 +19,30 @@ class MapCubit extends Cubit<MapState> {
       emit(MapLoading());
       final currentLocation = await _mapServices.getCurrentLocation();
       final region = RectangleRegion(
-    LatLngBounds(LatLng(32.5521, 34.2191), LatLng(31.2200, 35.5739)),
-);
+        LatLngBounds(LatLng(32.5521, 34.2191), LatLng(31.2200, 35.5739)),
+      );
       final cacheManager = FMTCStore('mapStore');
-      await cacheManager.manage.removeTilesOlderThan(expiry: DateTime.timestamp().subtract(Duration(minutes: 30)));
+      await cacheManager.manage.removeTilesOlderThan(
+          expiry: DateTime.now().subtract(Duration(minutes: 30)));
       final downloadableRegion = region.toDownloadable(
         minZoom: 1,
-        maxZoom: 18,
+        maxZoom: 20,
         options: TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          urlTemplate:
+              'https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}@2x.png?key=1nKMV4hTP8KKP9DAOtsl',
           userAgentPackageName: 'com.example.app',
         ),
       );
+
       // Download tiles for the Palestine bounding box
-      await cacheManager.download.startForeground(
+      // ignore: unused_result
+      cacheManager.download.startForeground(
         region: downloadableRegion, // Region to cache
         maxBufferLength: 1000,
         skipExistingTiles: true,
       );
       debugPrint("Tiles successfully cached for the region!");
+      debugPrint("${await cacheManager.stats.all}");
       emit(MapLoaded(
         cameraPosition: currentLocation,
         markers: [],

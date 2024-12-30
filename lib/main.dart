@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:map_based_search/core/utils/app_color.dart';
 import 'package:map_based_search/features/bottom_navbar/bottom_navbar.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 void main() async {

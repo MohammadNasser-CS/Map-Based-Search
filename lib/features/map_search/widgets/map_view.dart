@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 class MapView extends StatelessWidget {
@@ -31,11 +32,16 @@ class MapView extends StatelessWidget {
           ),
           children: [
             TileLayer(
+              minZoom: 1,
+              maxZoom: 20,
+              keepBuffer: 6,
               tileProvider: FMTCStore('mapStore').getTileProvider(
                   settings: FMTCTileProviderSettings(
                       behavior: CacheBehavior.onlineFirst,
                       maxStoreLength: 1000)),
-              urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+              urlTemplate:
+                  "https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}@2x.jpg?key=1nKMV4hTP8KKP9DAOtsl",
+                  // "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}.png",
             ),
             if (markers.isNotEmpty) MarkerLayer(markers: markers),
           ],

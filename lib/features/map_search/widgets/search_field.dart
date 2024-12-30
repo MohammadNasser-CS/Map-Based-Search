@@ -15,20 +15,26 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 50,
-      left: 20,
-      right: 20,
-      child: Card(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+      top: 10,
+      left: 10,
+      right: 10,
+      child: Opacity(
+        opacity: 0.9,
+        child: Card(
+          elevation: 5,
           child: TextField(
             controller: controller,
             decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsetsDirectional.symmetric(vertical: 0, horizontal: 10),
               hintText: 'Search for a place or category...',
+              hintStyle: TextStyle(fontSize: 14),
               border: InputBorder.none,
               suffixIcon: IconButton(
-                icon: const Icon(Icons.search),
+                icon: const Icon(
+                  Icons.search,
+                  size: 18,
+                ),
                 onPressed: onSearch,
               ),
             ),

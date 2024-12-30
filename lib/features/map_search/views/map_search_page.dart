@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:map_based_search/core/utils/app_color.dart';
 import 'package:map_based_search/features/map_search/manager/controller/map_cubit.dart';
 import 'package:map_based_search/features/map_search/widgets/map_view.dart';
 import 'package:map_based_search/features/map_search/widgets/search_field.dart';
@@ -27,7 +28,6 @@ class _MapSearchPageState extends State<MapSearchPage> {
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _MapSearchPageState extends State<MapSearchPage> {
                       .map((marker) => Marker(
                             point: LatLng(marker.lat, marker.lon),
                             child: const Icon(Icons.location_on,
-                                color: Colors.red, size: 40),
+                                color: AppColor.red, size: 40),
                           ))
                       .toList(),
                 );
@@ -83,15 +83,55 @@ class _MapSearchPageState extends State<MapSearchPage> {
                   {await cubit.searchMarkersByCategory(_searchController.text)},
               onSubmit: (value) async =>
                   {await cubit.searchMarkersByCategory(value)}),
+          // Combined Zoom and Current Location Controls
           Positioned(
-            bottom: 80,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: cubit.resetMarkers,
-              child: const Icon(Icons.my_location),
+            bottom: 10,
+            right: 10,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColor.black38,
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Zoom In Button
+                  IconButton(
+                    icon: const Icon(Icons.add, color: AppColor.black),
+                    onPressed: () {
+                      final currentZoom = _mapController.camera.zoom;
+                      _mapController.move(
+                          _mapController.camera.center, currentZoom + 1);
+                    },
+                  ),
+
+                  const Divider(height: 1, thickness: 1, color: AppColor.grey),
+                  // Zoom Out Button
+                  IconButton(
+                    icon: const Icon(Icons.remove, color: AppColor.black),
+                    onPressed: () {
+                      final currentZoom = _mapController.camera.zoom;
+                      _mapController.move(
+                          _mapController.camera.center, currentZoom - 1);
+                    },
+                  ),
+                  const Divider(height: 1, thickness: 1, color: AppColor.grey),
+                  // Current Location Button
+                  IconButton(
+                    icon: const Icon(Icons.my_location, color: AppColor.black),
+                    onPressed: cubit.resetMarkers,
+                  ),
+                ],
+              ),
             ),
           ),
-          
         ],
       ),
     );
