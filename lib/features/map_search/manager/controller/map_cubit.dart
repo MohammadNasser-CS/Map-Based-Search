@@ -23,14 +23,15 @@ class MapCubit extends Cubit<MapState> {
       );
       final cacheManager = FMTCStore('mapStore');
       await cacheManager.manage.removeTilesOlderThan(
-          expiry: DateTime.now().subtract(Duration(minutes: 30)));
+        expiry: DateTime.now().subtract(const Duration(days: 30)),
+      );
       final downloadableRegion = region.toDownloadable(
         minZoom: 1,
         maxZoom: 20,
         options: TileLayer(
           urlTemplate:
-              'https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}@2x.png?key=1nKMV4hTP8KKP9DAOtsl',
-          userAgentPackageName: 'com.example.app',
+              'https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}@2x.jpg?key=1nKMV4hTP8KKP9DAOtsl',
+          userAgentPackageName: 'map_based_search',
         ),
       );
 

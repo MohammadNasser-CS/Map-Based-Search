@@ -67,7 +67,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
           duration: Duration(milliseconds: 400),
         ),
         onTabChanged: (value) {},
-        stateManagement: true,
+        stateManagement: false,
       ),
     );
   }
