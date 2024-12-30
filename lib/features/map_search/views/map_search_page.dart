@@ -107,8 +107,11 @@ class _MapSearchPageState extends State<MapSearchPage> {
                     icon: const Icon(Icons.add, color: AppColor.black),
                     onPressed: () {
                       final currentZoom = _mapController.camera.zoom;
-                      _mapController.move(
-                          _mapController.camera.center, currentZoom + 1);
+                      debugPrint('$currentZoom');
+                      if (currentZoom < 19) {
+                        _mapController.move(
+                            _mapController.camera.center, currentZoom + 1);
+                      }
                     },
                   ),
 
@@ -118,8 +121,11 @@ class _MapSearchPageState extends State<MapSearchPage> {
                     icon: const Icon(Icons.remove, color: AppColor.black),
                     onPressed: () {
                       final currentZoom = _mapController.camera.zoom;
-                      _mapController.move(
-                          _mapController.camera.center, currentZoom - 1);
+                      debugPrint('$currentZoom');
+                      if (currentZoom > 3) {
+                        _mapController.move(
+                            _mapController.camera.center, currentZoom - 1);
+                      }
                     },
                   ),
                   const Divider(height: 1, thickness: 1, color: AppColor.grey),
